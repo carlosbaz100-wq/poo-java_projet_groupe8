@@ -27,3 +27,8 @@ Le programme enregistre des documents et des adhérents d'une bibliothèque. Il 
 | `Document` | A ses propres données (numéro, titre, auteur, disponibilité) et ses propres comportements (`emprunter`, `retourner`). |
 | `Lecteur` | A ses propres données (numéro, nom, adresse) et interagit avec les documents. |
 
+## Sources consultées
+
+- Cours CM1 — Objets, encapsulation et constructeurs (Dr Babacar LEYE)
+- Claude (Anthropic) — relecture du code et du README
+
