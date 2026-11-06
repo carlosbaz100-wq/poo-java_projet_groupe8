@@ -1,4 +1,4 @@
-public class Document {
+public abstract class Document {
 
     private int numero;
     private String titre;
@@ -6,10 +6,10 @@ public class Document {
     private boolean disponible;
     private Lecteur emprunteur;
 
-    public Document(int numero, String titre, String auteur) {
+    public Document(int numero, String titre, String auteurPrincipal) {
         this.numero = numero;
         this.titre = titre;
-        this.auteur = auteur;
+        this.auteurPrincipal = auteurPrincipal;
         this.disponible = true;
         this.emprunteur = null;
     }
@@ -22,8 +22,9 @@ public class Document {
         return titre;
     }
 
-    public String getAuteur() {
-        return auteur;
+   public String getAuteurPrincipal() {
+
+        return auteurPrincipal;
     }
 
     public boolean estDisponible() {
@@ -56,7 +57,9 @@ public class Document {
         this.emprunteur = null;
         this.disponible = true;
     }
-
+    
+ public abstract int dureePret();
+    
     @Override
     public String toString() {
         String etat;
@@ -65,6 +68,8 @@ public class Document {
         } else {
             etat = "emprunte par " + emprunteur.getPrenom() + " " + emprunteur.getNom();
         }
-        return "Document n°" + numero + " : \"" + titre + "\" — " + auteur + " [" + etat + "]";
+         return "Document n°" + numero + " : \"" + titre + "\" — " + auteurPrincipal
+                + " [" + etat + "] — duree de pret : " + dureePret() + " jours";
+    }
     }
 }
