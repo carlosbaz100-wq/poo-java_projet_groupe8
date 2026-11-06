@@ -71,5 +71,5 @@ public abstract class Document {
          return "Document n°" + numero + " : \"" + titre + "\" — " + auteurPrincipal
                 + " [" + etat + "] — duree de pret : " + dureePret() + " jours";
     }
-    }
+    
 }
