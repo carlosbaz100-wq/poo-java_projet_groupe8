@@ -2,7 +2,7 @@ public abstract class Document {
 
     private int numero;
     private String titre;
-    private String auteur;
+    private String auteurPrincipal;
     private boolean disponible;
     private Lecteur emprunteur;
 
