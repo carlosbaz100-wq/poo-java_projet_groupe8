@@ -1,4 +1,4 @@
-public class Periodique extends Document {
+public class Periodique extends Document implements Consultable {
 
     private int numeroParution;
 
