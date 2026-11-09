@@ -1,4 +1,4 @@
-public class Livre extends Document {
+public class Livre extends Document implements Empruntable {
 
     private int nombrePages;
     private String[] auteurs;
