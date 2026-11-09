@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Bibliotheque {
+public class Bibliotheque implements CatalogueDocuments {
 
     private String nom;
     private Map<Integer, Document> catalogue;
@@ -115,5 +115,18 @@ public class Bibliotheque {
 
     public String getNom() {
         return nom;
+    }
+    
+    public boolean retirerDocument(int numero) {
+    
+        Document document = catalogue.remove(numero);
+    
+        if (document == null) {
+            System.out.println("Aucun document trouvé avec le numéro : " + numero);
+            return false;
+        }
+    
+        System.out.println("Document retiré avec succès : " + document.getTitre());
+        return true;
     }
 }
