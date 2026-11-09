@@ -71,5 +71,16 @@ public abstract class Document {
          return "Document n°" + numero + " : \"" + titre + "\" — " + auteurPrincipal
                 + " [" + etat + "] — duree de pret : " + dureePret() + " jours";
     }
-    
+   @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Document document = (Document) o;
+        return numero == document.numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero);
+    } 
 }
