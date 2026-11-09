@@ -1,4 +1,4 @@
 public interface Consultable {
-    void consulterSurPlace(Lecteur 1 );
+    void consulterSurPlace(Lecteur l );
     void terminerConsultation();
 }
