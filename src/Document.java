@@ -1,4 +1,4 @@
-public abstract class Document {
+public abstract class Document implements CatalogueDocuments {
 
     private int numero;
     private String titre;
