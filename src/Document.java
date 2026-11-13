@@ -1,4 +1,5 @@
-public abstract class Document implements CatalogueDocuments {
+import java.util.Objects;
+public abstract class Document  {
 
     private int numero;
     private String titre;
