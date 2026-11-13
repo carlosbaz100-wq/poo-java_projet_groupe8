@@ -109,9 +109,8 @@ public class Main {
         bib.inscrireAdherent(lec1bis);
         System.out.println("Nb adherents apres doublon : " + bib.getNbAdherents());
 
-        System.out.println("lec1.equals(lec1bis) : " + lec1.equals(lec1bis));
-        System.out.println(" "
-                + (lec1.hashCode() == lec1bis.hashCode()));
+        System.out.println(" " + lec1.equals(lec1bis));
+        System.out.println(" " + (lec1.hashCode() == lec1bis.hashCode()));
 
         System.out.println("lec1 est adherent : " + bib.estAdherent(lec1));
 
