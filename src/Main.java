@@ -56,7 +56,7 @@ public class Main {
         System.out.println(" TEST 8 : auteurs du livre ");
         System.out.println("Auteur principal : " + l1.getAuteurPrincipal());
         String[] auteurs = l1.getAuteurs();
-        System.out.println("Nombre de co-auteurs : " l1.getNbAuteurs() );
+        System.out.println("Nombre de co-auteurs : " +l1.getNbAuteurs() );
         for (int i = 0; i <l1.getNbAuteurs(); i++) {
             System.out.println("  Co-auteur " + (i + 1) + " : " + auteurs[i]);
         }
