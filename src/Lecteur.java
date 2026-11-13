@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Lecteur {
 
     private String nom;
@@ -26,6 +28,19 @@ public class Lecteur {
 
     public String getAdresse() {
         return adresse;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lecteur lecteur = (Lecteur) o;
+        return numero == lecteur.numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero);
     }
 
     @Override
