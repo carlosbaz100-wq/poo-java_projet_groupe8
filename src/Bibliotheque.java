@@ -2,17 +2,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Bibliotheque implements CatalogueDocuments {
 
     private String nom;
     private Map<Integer, Document> catalogue;
+    private Set<Lecteur> adherents;
+    private List<String> historiquePrets;
 
     public Bibliotheque(String nom) {
         this.nom = nom;
         this.catalogue = new HashMap<>();
+        this.adherents = new HashSet<>();
+        this.historiquePrets = new ArrayList<>();
     }
 
     public boolean ajouterDocument(Document d) {
@@ -34,6 +40,16 @@ public class Bibliotheque implements CatalogueDocuments {
 
     public List<Document> getTousLesDocuments() {
         return new ArrayList<>(catalogue.values());
+    }
+
+    public boolean retirerDocument(int numero) {
+        Document document = catalogue.remove(numero);
+        if (document == null) {
+            System.out.println("Aucun document trouve avec le numero : " + numero);
+            return false;
+        }
+        System.out.println("Document retire avec succes : " + document.getTitre());
+        return true;
     }
 
     public void afficherCatalogue() {
@@ -109,24 +125,77 @@ public class Bibliotheque implements CatalogueDocuments {
         return groupes;
     }
 
+    public boolean inscrireAdherent(Lecteur l) {
+        if (l == null) {
+            System.out.println("Erreur : lecteur null.");
+            return false;
+        }
+        boolean ajout = adherents.add(l);
+        if (!ajout) {
+            System.out.println("Refus : le lecteur n°" + l.getNumero() + " est deja inscrit.");
+        } else {
+            System.out.println("Adherent inscrit : " + l.getPrenom() + " " + l.getNom());
+        }
+        return ajout;
+    }
+
+    public boolean estAdherent(Lecteur l) {
+        return adherents.contains(l);
+    }
+
+    public Set<Lecteur> getAdherents() {
+        return new HashSet<>(adherents);
+    }
+
+    public int getNbAdherents() {
+        return adherents.size();
+    }
+
+    public void afficherAdherents() {
+        System.out.println("Adherents de la bibliotheque " + nom + " (" + adherents.size() + ") :");
+        if (adherents.isEmpty()) {
+            System.out.println("  Aucun adherent inscrit.");
+            return;
+        }
+        for (Lecteur l : adherents) {
+            System.out.println("  " + l);
+        }
+    }
+
+    public void enregistrerPret(Lecteur l, Document d) {
+        String entree = l.getPrenom() + " " + l.getNom()
+                + " a emprunte \"" + d.getTitre()
+                + "\" (doc n°" + d.getNumero() + ")";
+        historiquePrets.add(entree);
+    }
+
+    public void enregistrerRetour(Lecteur l, Document d) {
+        String entree = l.getPrenom() + " " + l.getNom()
+                + " a retourne \"" + d.getTitre()
+                + "\" (doc n°" + d.getNumero() + ")";
+        historiquePrets.add(entree);
+    }
+
+    public List<String> getHistoriquePrets() {
+        return new ArrayList<>(historiquePrets);
+    }
+
+    public void afficherHistorique() {
+        System.out.println("Historique des prets de la bibliotheque " + nom + " :");
+        if (historiquePrets.isEmpty()) {
+            System.out.println("  Aucun pret enregistre.");
+            return;
+        }
+        for (int i = 0; i < historiquePrets.size(); i++) {
+            System.out.println("  " + (i + 1) + ". " + historiquePrets.get(i));
+        }
+    }
+
     public int getNbDocuments() {
         return catalogue.size();
     }
 
     public String getNom() {
         return nom;
-    }
-    
-    public boolean retirerDocument(int numero) {
-    
-        Document document = catalogue.remove(numero);
-    
-        if (document == null) {
-            System.out.println("Aucun document trouvé avec le numéro : " + numero);
-            return false;
-        }
-    
-        System.out.println("Document retiré avec succès : " + document.getTitre());
-        return true;
     }
 }
