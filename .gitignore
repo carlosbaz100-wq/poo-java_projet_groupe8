@@ -1,0 +1,22 @@
+# Fichiers produits par la compilation et par l'IDE
+target/
+out/
+outtest/
+*.class
+
+# Historique des tests et rapports
+target/surefire-reports/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# Systeme
+.DS_Store
+Thumbs.db
