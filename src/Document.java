@@ -1,18 +1,26 @@
 import java.util.Objects;
-public abstract class Document  {
 
-    private int numero;
-    private String titre;
-    private String auteurPrincipal;
-    private boolean disponible;
+public abstract class Document {
+
+    private final int numero;
+    private final String titre;
+    private final String auteurPrincipal;
+    private boolean disponible = true;
     private Lecteur emprunteur;
 
-    public Document(int numero, String titre, String auteurPrincipal) {
+    protected Document(int numero, String titre, String auteurPrincipal) {
+        if (numero <= 0) {
+            throw new IllegalArgumentException("Le numero doit etre > 0");
+        }
+        if (titre == null || titre.isBlank()) {
+            throw new IllegalArgumentException("Le titre est obligatoire");
+        }
+        if (auteurPrincipal == null || auteurPrincipal.isBlank()) {
+            throw new IllegalArgumentException("L'auteur est obligatoire");
+        }
         this.numero = numero;
         this.titre = titre;
         this.auteurPrincipal = auteurPrincipal;
-        this.disponible = true;
-        this.emprunteur = null;
     }
 
     public int getNumero() {
@@ -23,8 +31,7 @@ public abstract class Document  {
         return titre;
     }
 
-   public String getAuteurPrincipal() {
-
+    public String getAuteurPrincipal() {
         return auteurPrincipal;
     }
 
@@ -37,30 +44,26 @@ public abstract class Document  {
     }
 
     public void emprunter(Lecteur l) {
-        if (!disponible) {
-            System.out.println("Refus : \"" + titre + "\" est deja emprunte par "
-                    + emprunteur.getPrenom() + " " + emprunteur.getNom());
-            return;
+        if (l == null) {
+            throw new IllegalArgumentException("Le lecteur est obligatoire");
         }
-        this.emprunteur = l;
+        if (!disponible) { // verification AVANT mutation
+            throw new DocumentIndisponibleException("Document deja emprunte : " + numero);
+        }
+        this.emprunteur = l; // mutation
         this.disponible = false;
-        System.out.println(l.getPrenom() + " " + l.getNom()
-                + " a emprunte : \"" + titre + "\"");
     }
 
     public void retourner() {
-        if (disponible) {
-            System.out.println("Refus : \"" + titre + "\" est deja disponible, pas d'emprunt en cours");
-            return;
+        if (disponible) { // verification AVANT mutation
+            throw new RetourImpossibleException("Aucun emprunt en cours pour : " + numero);
         }
-        System.out.println(emprunteur.getPrenom() + " " + emprunteur.getNom()
-                + " a retourne : \"" + titre + "\"");
-        this.emprunteur = null;
+        this.emprunteur = null; // mutation
         this.disponible = true;
     }
-    
- public abstract int dureePret();
-    
+
+    public abstract int dureePret();
+
     @Override
     public String toString() {
         String etat;
@@ -69,10 +72,11 @@ public abstract class Document  {
         } else {
             etat = "emprunte par " + emprunteur.getPrenom() + " " + emprunteur.getNom();
         }
-         return "Document n°" + numero + " : \"" + titre + "\" — " + auteurPrincipal
-                + " [" + etat + "] — duree de pret : " + dureePret() + " jours";
+        return "Document n°" + numero + " : \"" + titre + "\" : " + auteurPrincipal
+                + " [" + etat + "] : duree de pret : " + dureePret() + " jours";
     }
-   @Override
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -83,5 +87,5 @@ public abstract class Document  {
     @Override
     public int hashCode() {
         return Objects.hash(numero);
-    } 
+    }
 }
