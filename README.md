@@ -153,9 +153,11 @@ tableau de recette complet, avec l'etat observable apres chaque appel, se trouve
 
 | Membre | Perimetre | Fichiers | Lignes |
 |---|---|---|---|
-| KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `ServicePret`, les quatre exceptions, `CatalogueDocuments` | 192 |
+| KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `Bibliotheque` (correctif final), `ServicePret`, `Empruntable`, les quatre exceptions | 350 |
 | DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les six classes de test, `docs/recette.md` | 467 |
-| BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `Bibliotheque`, `README`, diagrammes, rapport, presentation | 382 |
+| BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `CatalogueDocuments`, `Consultable`, `README`, diagrammes, rapport, presentation | 189 |
+
+Total : 1006 lignes Java suivies par Git.
 
 Chaque jalon a fait l'objet d'un tag : `jalon-1`, `jalon-2`, `jalon-3`, puis `jalon-4`
 et `version-1.0` pour la version finale. L'historique des commits indique l'auteur de
