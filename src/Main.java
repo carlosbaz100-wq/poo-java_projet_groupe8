@@ -96,7 +96,20 @@ public class Main {
         System.out.println("Nombre d'adherents : " + bibliotheque.getNbAdherents());
 
         System.out.println();
-        System.out.println("Etape 9 : tri par titre");
+        System.out.println("Etape 9 : consultation d'un periodique");
+        revue.consulterSurPlace(alice);
+        System.out.println(revue);
+        try {
+            service.emprunter(201, bob);
+            System.out.println("Anomalie : un periodique en consultation a pu etre emprunte");
+        } catch (DocumentIndisponibleException e) {
+            System.out.println("Refus attendu : " + e.getMessage());
+        }
+        revue.terminerConsultation();
+        System.out.println("Consultation terminee : " + !revue.estEnConsultation());
+
+        System.out.println();
+        System.out.println("Etape 10 : tri par titre");
         List<Document> tries = bibliotheque.getDocumentsTriesParTitre();
         for (Document document : tries) {
             System.out.println("   " + document.getTitre());

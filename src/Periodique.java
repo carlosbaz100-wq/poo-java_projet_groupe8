@@ -1,5 +1,4 @@
-
-public class Periodique extends Document implements Consultable {
+public class Periodique extends Document implements Consultable, Empruntable {
 
     private final int numeroParution;
     // Etat de consultation sur place
@@ -20,6 +19,7 @@ public class Periodique extends Document implements Consultable {
         return numeroParution;
     }
 
+    @Override
     public boolean estEnConsultation() {
         return enConsultation;
     }
@@ -31,6 +31,19 @@ public class Periodique extends Document implements Consultable {
     @Override
     public int dureePret() {
         return 7;
+    }
+
+    // Un periodique en consultation ne peut pas etre emprunte en meme temps.
+    @Override
+    public void emprunter(Lecteur l) {
+        if (l == null) {
+            throw new IllegalArgumentException("Le lecteur est obligatoire");
+        }
+        if (enConsultation) {
+            throw new DocumentIndisponibleException(
+                    "Document en consultation, pret impossible : " + getNumero());
+        }
+        super.emprunter(l);
     }
 
     // Consultation sur place : on verifie tout AVANT de modifier l'etat.
@@ -73,7 +86,7 @@ public class Periodique extends Document implements Consultable {
                 ? "  en consultation sur place par " + consultant.getPrenom() + " " + consultant.getNom()
                 : "";
 
-        return "Periodique n°" + getNumero() + " : \"" + getTitre() + "\" — " + getAuteurPrincipal()
+        return "Periodique n°" + getNumero() + " : \"" + getTitre() + "\" : " + getAuteurPrincipal()
                 + " (parution n°" + numeroParution + ")"
                 + " [" + etat + consult + "] : duree de pret : " + dureePret() + " jours";
     }

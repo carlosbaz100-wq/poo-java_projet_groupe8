@@ -41,7 +41,20 @@ public class Bibliotheque implements CatalogueDocuments {
 
     @Override
     public boolean retirerDocument(int numero) {
-        return catalogue.remove(numero) != null;
+        Document d = catalogue.get(numero);
+        if (d == null) {
+            return false;
+        }
+        if (!d.estDisponible()) {
+            throw new DocumentIndisponibleException(
+                    "Document emprunte, retrait impossible : " + numero);
+        }
+        if (d instanceof Consultable consultable && consultable.estEnConsultation()) {
+            throw new DocumentIndisponibleException(
+                    "Document en consultation, retrait impossible : " + numero);
+        }
+        catalogue.remove(numero);
+        return true;
     }
 
     @Override
@@ -99,7 +112,7 @@ public class Bibliotheque implements CatalogueDocuments {
     }
 
     public Set<Lecteur> getAdherents() {
-        return new HashSet<>(adherents);
+        return Collections.unmodifiableSet(adherents);
     }
 
     public int getNbAdherents() {
@@ -120,7 +133,9 @@ public class Bibliotheque implements CatalogueDocuments {
         System.out.println("Documents disponibles dans la bibliotheque " + nom);
         int count = 0;
         for (Document d : catalogue.values()) {
-            if (d.estDisponible()) {
+            boolean enConsultation = d instanceof Consultable consultable
+                    && consultable.estEnConsultation();
+            if (d.estDisponible() && !enConsultation) {
                 System.out.println(d);
                 count++;
             }

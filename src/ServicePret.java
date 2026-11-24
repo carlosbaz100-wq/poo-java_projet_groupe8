@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class ServicePret {
 
@@ -12,21 +12,25 @@ public class ServicePret {
 
     public ServicePret(CatalogueDocuments catalogue, Collection<Lecteur> adherents) {
         this.catalogue = Objects.requireNonNull(catalogue, "Le catalogue est obligatoire");
-        this.adherents = Set.copyOf(Objects.requireNonNull(adherents, "Les adherents sont obligatoires"));
+        this.adherents = Collections.unmodifiableCollection(
+                Objects.requireNonNull(adherents, "Les adherents sont obligatoires"));
     }
 
     public void emprunter(int numeroDocument, Lecteur lecteur) {
-         // Arguments
+        // 1. Arguments
         verifierArguments(numeroDocument, lecteur);
-        // Existence
+        // 2. Existence
         Document d = trouverDocument(numeroDocument);
-        // Regles metier
+        // 3. Regles metier
         if (!adherents.contains(lecteur)) {
             throw new AdherentNonInscritException("Lecteur non inscrit : " + lecteur.getNumero());
         }
-        // 4. Mutation 
-        d.emprunter(lecteur);
-        // 5. Historique 
+        if (!(d instanceof Empruntable empruntable)) {
+            throw new DocumentIndisponibleException("Document non empruntable : " + numeroDocument);
+        }
+        // 4. Mutation
+        empruntable.emprunter(lecteur);
+        // 5. Historique
         historique.add(lecteur.getNumero() + " a emprunte le document " + numeroDocument);
     }
 
@@ -36,15 +40,18 @@ public class ServicePret {
         // 2. Existence
         Document d = trouverDocument(numeroDocument);
         // 3. Regles metier
-        if (d.getEmprunteur() == null) {
+        if (!(d instanceof Empruntable empruntable)) {
+            throw new DocumentIndisponibleException("Document non empruntable : " + numeroDocument);
+        }
+        if (empruntable.getEmprunteur() == null) {
             throw new RetourImpossibleException("Aucun emprunt en cours : " + numeroDocument);
         }
-        if (!d.getEmprunteur().equals(lecteur)) {
+        if (!empruntable.getEmprunteur().equals(lecteur)) {
             throw new RetourImpossibleException(
                     "Ce lecteur n'a pas emprunte ce document : " + numeroDocument);
         }
         // 4. Mutation
-        d.retourner();
+        empruntable.retourner();
         // 5. Historique
         historique.add(lecteur.getNumero() + " a retourne le document " + numeroDocument);
     }

@@ -17,14 +17,14 @@ class DocumentTest {
         bob = new Lecteur("Traore", "Bob", 2, "Ouagadougou");
     }
 
-    // Test 1 — Prouve : un document neuf est dans un etat valide de depart.
+    // Test 1 : Prouve : un document neuf est dans un etat valide de depart.
     @Test
     void nouveauDocumentEstDisponible() {
         assertTrue(livre.estDisponible());
         assertNull(livre.getEmprunteur());
     }
 
-    // Test 2 — Prouve : emprunter change bien la disponibilite ET l'emprunteur.
+    // Test 2 : Prouve : emprunter change bien la disponibilite ET l'emprunteur.
     @Test
     void emprunterRendLeDocumentIndisponible() {
         livre.emprunter(alice);
@@ -33,7 +33,7 @@ class DocumentTest {
         assertSame(alice, livre.getEmprunteur());
     }
 
-    // Test 3 (REFUS) — Prouve : le 2e emprunt leve l'exception et ne vole pas le document.
+    // Test 3 (REFUS) : Prouve : le 2e emprunt leve l'exception et ne vole pas le document.
     @Test
     void emprunterDeuxFoisRefuseEtGardeLEmprunteur() {
         livre.emprunter(alice);
@@ -44,7 +44,7 @@ class DocumentTest {
         assertFalse(livre.estDisponible());         // etat inchange
     }
 
-    // Test 4 (REFUS) — Prouve : on ne peut pas retourner ce qui n'est pas emprunte.
+    // Test 4 (REFUS) : Prouve : on ne peut pas retourner ce qui n'est pas emprunte.
     @Test
     void retournerSansEmpruntRefuseEtGardeLEtat() {
         assertThrows(RetourImpossibleException.class, () -> livre.retourner());

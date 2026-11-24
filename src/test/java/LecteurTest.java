@@ -15,6 +15,12 @@ class LecteurTest {
     }
 
     @Test
+    void prenomVideRefuse() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Lecteur("Diallo", " ", 1, "Ouagadougou"));
+    }
+
+    @Test
     void numeroNegatifOuNulRefuse() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Lecteur("Diallo", "Alice", 0, "Ouagadougou"));

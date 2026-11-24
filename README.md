@@ -7,7 +7,7 @@ realisee en groupe de trois sur quatre jalons.
 ![Java 17](https://img.shields.io/badge/Java-17-blue)
 ![Maven](https://img.shields.io/badge/Maven-3.9-orange)
 ![JUnit 5](https://img.shields.io/badge/JUnit-5.11-green)
-![Tests](https://img.shields.io/badge/tests-21%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-44%20passing-brightgreen)
 
 | Element | Valeur |
 |---|---|
@@ -18,7 +18,7 @@ realisee en groupe de trois sur quatre jalons.
 | Annee academique | 2026 - 2027 |
 | Version livree | jalon 4 et version 1.0 |
 | Depot | https://github.com/carlosbaz100-wq/poo-java_projet_groupe8 |
-| Tag final | version-1.0 (commit b4c4a4f) |
+| Tag final | version-1.0 (commit de cloture) |
 
 ## 1. Sujet et perimetre
 
@@ -30,8 +30,8 @@ Fonctionnalites couvertes :
 
 - catalogue de documents avec ajout, recherche par numero, recherche par titre, retrait,
   tri par titre et regroupement par auteur ;
-- deux types de documents, le livre et le periodique, et une consultation sur place
-  reservee aux periodiques ;
+- deux types de documents, le livre et le periodique ; un periodique peut etre
+  consulte sur place ou emprunte, mais jamais les deux a la fois ;
 - adherents identifies par un numero unique, avec recherche et affichage ;
 - emprunt et retour orchestres par un service dedie, avec historique des operations ;
 - refus explicites par exceptions pour tous les cas invalides.
@@ -53,7 +53,7 @@ Depuis la racine du depot :
 mvn clean test
 ```
 
-Resultat attendu : `BUILD SUCCESS` et 21 tests sans echec.
+Resultat attendu : `BUILD SUCCESS` et 44 tests sans echec.
 
 Les rapports detailles sont ecrits dans `target/surefire-reports/`.
 
@@ -70,9 +70,10 @@ mvn clean compile
 java -cp target/classes Main
 ```
 
-La demonstration enchaine neuf etapes : affichage du catalogue, emprunt accepte,
+La demonstration enchaine dix etapes : affichage du catalogue, emprunt accepte,
 second emprunt refuse, lecteur non inscrit, document absent, retour, retour impossible,
-historique des operations reussies, puis etat final du catalogue et tri par titre.
+historique des operations reussies, etat final du catalogue, consultation d'un periodique
+avec refus d'emprunt pendant la consultation, puis tri par titre.
 
 ## 5. Architecture
 
@@ -82,10 +83,10 @@ stocke et retrouve les documents, le service orchestre les prets.
 | Classe | Role | Ne fait jamais |
 |---|---|---|
 | `Document` | etat du document (disponible, emprunteur), invariants, transitions d'etat | afficher un message, connaitre le catalogue |
-| `Livre` | document avec nombre de pages et co-auteurs | gerer un pret |
-| `Periodique` | document avec numero de parution et consultation sur place | gerer un pret |
-| `Consultable` | contrat de la consultation sur place | - |
-| `Empruntable` | contrat du pret d'un document | - |
+| `Livre` | document avec nombre de pages et co-auteurs | decider des regles de pret |
+| `Periodique` | document avec numero de parution, consultation sur place et pret | decider des regles de pret |
+| `Consultable` | contrat de la consultation sur place (consulter, terminer, etat) | - |
+| `Empruntable` | contrat du pret d'un document (emprunter, retourner, etat) | - |
 | `Lecteur` | identite de l'adherent, egalite par numero | connaitre ses emprunts |
 | `CatalogueDocuments` | contrat du catalogue | decider si un pret est autorise |
 | `Bibliotheque` | catalogue concret, adherents, recherches, tris | enregistrer un pret |
@@ -99,18 +100,20 @@ alourdir les signatures ; les arguments invalides levent `IllegalArgumentExcepti
 
 ## 6. Choix de conception
 
-**Document abstraite.** Chaque sous-classe impose sa duree de pret : 21 jours pour un
+**Classe Document abstraite.** Chaque sous-classe impose sa duree de pret : 21 jours pour un
 livre, 7 jours pour un periodique. Ajouter un type de document oblige le compilateur a
 verifier l'implementation de `dureePret()`.
 
 **Interfaces separees.** `Consultable` et `Empruntable` isolent deux comportements
-differents. Un periodique est consultable sur place et empruntable, un livre est
-seulement empruntable, ce qui evite une hierarchie rigide.
+differents. Un periodique est consultable sur place et empruntable, mais jamais les
+deux a la fois ; un livre est seulement empruntable. Cette separation evite une
+hierarchie rigide et rend explicites les contrats de chaque usage.
 
 **Collections adaptees au besoin.** `HashMap` pour retrouver un document par numero en
 temps constant, `HashSet` pour garantir l'unicite des adherents, `ArrayList` pour
-conserver l'ordre de l'historique, `List.copyOf` et `Set.copyOf` pour renvoyer des
-copies non modifiables.
+conserver l'ordre de l'historique. `List.copyOf` protege l'historique, et
+`Collections.unmodifiableSet` renvoie une vue non modifiable mais vivante des
+adherents, afin que le service voie les inscriptions posterieures a sa creation.
 
 **Service separe du modele.** `ServicePret` est le seul endroit qui combine catalogue,
 adherents et historique. `Bibliotheque` ne connait plus la notion de pret, ce qui
@@ -123,7 +126,7 @@ verification :
 
 | Etape | Question | Si l'etape echoue |
 |---|---|---|
-| 1. Arguments | le lecteur est-il non nul, le numero est-il valide | `IllegalArgumentException` |
+| 1. Arguments | le lecteur est-il non nul, le numero est-il valide ? | `IllegalArgumentException` |
 | 2. Existence | le document est-il dans le catalogue | `DocumentIntrouvableException` |
 | 3. Regle metier | le lecteur est-il inscrit, le document est-il libre | exception metier |
 | 4. Mutation | changement de la disponibilite et de l'emprunteur | aucune |
@@ -134,30 +137,34 @@ l'exception et l'etat observe juste apres l'appel.
 
 ## 8. Tests et validation
 
-La suite compte 21 tests repartis en six classes :
+La suite compte 44 tests repartis en sept classes :
 
 | Classe de test | Nombre | Objet |
 |---|---|---|
 | `DocumentTest` | 4 | transitions d'etat, dont deux refus |
-| `LecteurTest` | 3 | invariants et egalite par numero |
-| `PeriodiqueTest` | 2 | consultation sur place, deux refus |
-| `CatalogueTest` | 4 | ajout, doublon, retrait, recherche |
-| `ServicePretEmpruntTest` | 5 | emprunt, dont quatre refus |
-| `ServicePretRetourTest` | 3 | retour, dont deux refus |
+| `LivreTest` | 6 | invariants, co-auteurs et encapsulation, dont quatre refus |
+| `LecteurTest` | 4 | invariants et egalite par numero, dont trois refus |
+| `PeriodiqueTest` | 5 | consultation sur place et exclusion avec le pret, dont quatre refus |
+| `CatalogueTest` | 11 | ajout, doublon, retrait, recherche, tri et regroupement, dont quatre refus |
+| `ServicePretEmpruntTest` | 8 | emprunt, dont six refus |
+| `ServicePretRetourTest` | 6 | retour, dont cinq refus |
 
-Les 16 tests demandes par la fiche TD 4 sont couverts, dont 6 refus distincts. Le
-tableau de recette (validation des tests) donne, pour chaque scenario, le resultat
-attendu et l'etat observe apres l'appel : `docs/recette.md`.
+Les 16 tests demandes par la fiche TD 4 sont couverts. La suite complete compte
+44 tests, dont 16 succes et 28 refus. Le tableau de recette (validation des tests)
+donne, pour chaque scenario, le resultat attendu et l'etat observe apres l'appel :
+`docs/recette.md`.
 
 ## 9. Contributions
 
 | Membre | Perimetre | Fichiers | Lignes |
 |---|---|---|---|
-| KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `Bibliotheque` (correctif final), `ServicePret`, `Empruntable`, les quatre exceptions | 350 |
-| DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les six classes de test, `docs/recette.md` | 467 |
-| BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `CatalogueDocuments`, `Consultable`, `README`, diagrammes, rapport, presentation | 189 |
+| KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `Bibliotheque`, `ServicePret`, `Empruntable`, les quatre exceptions | 373 |
+| DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les sept classes de test, `docs/recette.md` | 758 |
+| BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `CatalogueDocuments`, `Consultable`, `README`, diagramme, rapport, presentation | 217 |
 
-Total : 1006 lignes Java suivies par Git.
+Total : 1348 lignes Java suivies par Git (etat final). La matrice PME distingue les
+taches historiques et la tache d'harmonisation finale ; les lignes ci-dessus sont
+comptees par fichier au dernier commit, pas par auteur de chaque ligne.
 
 Chaque jalon a fait l'objet d'un tag : `jalon-1`, `jalon-2`, `jalon-3`, puis `jalon-4`
 et `version-1.0` pour la version finale. L'historique des commits indique l'auteur de
@@ -165,8 +172,7 @@ chaque fichier.
 
 ## 10. Limites connues
 
-- La suite ne couvre pas le cas d'un periodique en consultation sur place que l'on
-  tente d'emprunter en meme temps.
+- La consultation sur place n'a pas de duree maximale ni de reservation.
 - Les donnees sont en memoire : tout est perdu a la fermeture du programme.
 - Aucune notion d'amende ni de duree de pret depassee n'est implementee.
 
@@ -175,10 +181,10 @@ chaque fichier.
 Les livrables du projet se trouvent dans le dossier `docs/` :
 
 - `docs/diagramme-jalon4.png` : diagramme de classes.
-- `docs/rapport-jalon4.pdf` : rapport de soutenance (8 pages).
-- `docs/presentation-jalon4.pdf` : presentation de soutenance (7 slides).
+- `docs/rapport-jalon4.pdf` : rapport final (10 pages hors annexes).
+- `docs/presentation-jalon4.pdf` : presentation de demonstration (7 slides).
 - `docs/matrice_PME.xlsx` : matrice Produit / Moyen / Element de preuve.
-- `docs/recette.md` : tableau de recette (validation des tests), avec l'etat observe apres chaque appel.
+- `docs/recette.md` : tableau de recette (scenarios et validation des tests), avec l'etat observe apres chaque appel.
 
 ## 12. Sources
 
@@ -186,4 +192,4 @@ Les livrables du projet se trouvent dans le dossier `docs/` :
 - Fiche TD 4, tests unitaires et matrice de tests.
 - Documentation JUnit 5 et Maven.
 - Claude (Anthropic) : relecture du code, du README et aide a la redaction.
-- Capsule video de demonstration (8 minutes maximum) remise sur cle USB.
+- Capsule video de demonstration (8 minutes maximum), a remettre sur cle USB.

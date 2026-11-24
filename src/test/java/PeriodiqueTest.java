@@ -37,4 +37,41 @@ class PeriodiqueTest {
         assertFalse(periodique.estEnConsultation());
         assertNull(periodique.getConsultant());
     }
+
+    @Test
+    void consulterReussiPuisTerminer() {
+        periodique.consulterSurPlace(alice);
+
+        assertTrue(periodique.estEnConsultation());
+        assertSame(alice, periodique.getConsultant());
+
+        periodique.terminerConsultation();
+
+        assertFalse(periodique.estEnConsultation());
+        assertNull(periodique.getConsultant());
+    }
+
+    @Test
+    void consulterPuisEmprunterRefuseEtGardeLEtat() {
+        periodique.consulterSurPlace(alice);
+
+        assertThrows(DocumentIndisponibleException.class,
+                () -> periodique.emprunter(bob));
+
+        assertTrue(periodique.estEnConsultation());
+        assertSame(alice, periodique.getConsultant());
+        assertTrue(periodique.estDisponible());
+        assertNull(periodique.getEmprunteur());
+    }
+
+    @Test
+    void doubleConsultationRefuseEtGardeLEtat() {
+        periodique.consulterSurPlace(alice);
+
+        assertThrows(DocumentIndisponibleException.class,
+                () -> periodique.consulterSurPlace(bob));
+
+        assertTrue(periodique.estEnConsultation());
+        assertSame(alice, periodique.getConsultant());
+    }
 }
