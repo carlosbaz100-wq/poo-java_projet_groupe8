@@ -1,6 +1,13 @@
 # Application de gestion de bibliotheque
 
-Mini-projet de Programmation Oriente Objet (POO IIAA511), Institut 2iE.
+Mini-projet de Programmation Orientee Objet (POO IIAA511), Institut 2iE.
+Application console de gestion de catalogue et de prets d'une bibliotheque,
+realisee en groupe de trois sur quatre jalons.
+
+![Java 17](https://img.shields.io/badge/Java-17-blue)
+![Maven](https://img.shields.io/badge/Maven-3.9-orange)
+![JUnit 5](https://img.shields.io/badge/JUnit-5.11-green)
+![Tests](https://img.shields.io/badge/tests-21%20passing-brightgreen)
 
 | Element | Valeur |
 |---|---|
@@ -10,6 +17,8 @@ Mini-projet de Programmation Oriente Objet (POO IIAA511), Institut 2iE.
 | Encadrant | Dr Babacar LEYE |
 | Annee academique | 2026 - 2027 |
 | Version livree | jalon 4 et version 1.0 |
+| Depot | https://github.com/carlosbaz100-wq/poo-java_projet_groupe8 |
+| Tag final | version-1.0 (commit b4c4a4f) |
 
 ## 1. Sujet et perimetre
 
@@ -133,8 +142,8 @@ La suite compte 21 tests repartis en six classes :
 | `LecteurTest` | 3 | invariants et egalite par numero |
 | `PeriodiqueTest` | 2 | consultation sur place, deux refus |
 | `CatalogueTest` | 4 | ajout, doublon, retrait, recherche |
-| `ServicePretEmpruntTest` | 5 | emprunt, dont trois refus |
-| `ServicePretRetourTest` | 3 | retour, dont refus d'un retour impossible |
+| `ServicePretEmpruntTest` | 5 | emprunt, dont quatre refus |
+| `ServicePretRetourTest` | 3 | retour, dont deux refus |
 
 Les 16 tests demandes par la fiche TD 4 sont couverts, dont 6 refus distincts. Le
 tableau de recette complet, avec l'etat observable apres chaque appel, se trouve dans
@@ -142,11 +151,11 @@ tableau de recette complet, avec l'etat observable apres chaque appel, se trouve
 
 ## 9. Contributions
 
-| Membre | Perimetre | Fichiers |
-|---|---|---|
-| KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `ServicePret`, les quatre exceptions, `CatalogueDocuments` |
-| DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les six classes de test, `docs/recette.md` |
-| BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `Bibliotheque`, `README`, diagrammes, rapport, presentation |
+| Membre | Perimetre | Fichiers | Lignes |
+|---|---|---|---|
+| KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `ServicePret`, les quatre exceptions, `CatalogueDocuments` | 192 |
+| DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les six classes de test, `docs/recette.md` | 467 |
+| BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `Bibliotheque`, `README`, diagrammes, rapport, presentation | 382 |
 
 Chaque jalon a fait l'objet d'un tag : `jalon-1`, `jalon-2`, `jalon-3`, puis `jalon-4`
 et `version-1.0` pour la version finale. L'historique des commits indique l'auteur de
@@ -159,9 +168,20 @@ chaque fichier.
 - Les donnees sont en memoire : tout est perdu a la fermeture du programme.
 - Aucune notion d'amende ni de duree de pret depassee n'est implementee.
 
-## 11. Sources
+## 11. Documentation
+
+Les livrables du projet se trouvent dans le dossier `docs/` :
+
+- `docs/diagramme-jalon4.png` : diagramme de classes.
+- `docs/rapport-jalon4.pdf` : rapport de soutenance (8 pages).
+- `docs/presentation-jalon4.pdf` : presentation de soutenance (7 slides).
+- `docs/matrice_PME.xlsx` : matrice Produit / Moyen / Element de preuve.
+- `docs/recette.md` : tableau de recette complet.
+
+## 12. Sources
 
 - CM 1 a CM 5, POO IIAA511, Dr Babacar LEYE.
 - Fiche TD 4, tests unitaires et matrice de tests.
 - Documentation JUnit 5 et Maven.
 - Claude (Anthropic) : relecture du code, du README et aide a la redaction.
+- Capsule video de demonstration (8 minutes maximum) remise sur cle USB.
