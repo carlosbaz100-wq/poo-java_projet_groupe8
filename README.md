@@ -132,7 +132,7 @@ verification :
 Consequence : un refus ne laisse jamais d'etat partiel. Les tests de refus verifient
 l'exception et l'etat observe juste apres l'appel.
 
-## 8. Tests et recette
+## 8. Tests et validation
 
 La suite compte 21 tests repartis en six classes :
 
@@ -146,8 +146,8 @@ La suite compte 21 tests repartis en six classes :
 | `ServicePretRetourTest` | 3 | retour, dont deux refus |
 
 Les 16 tests demandes par la fiche TD 4 sont couverts, dont 6 refus distincts. Le
-tableau de recette complet, avec l'etat observable apres chaque appel, se trouve dans
-`docs/recette.md`.
+tableau de recette (validation des tests) donne, pour chaque scenario, le resultat
+attendu et l'etat observe apres l'appel : `docs/recette.md`.
 
 ## 9. Contributions
 
@@ -178,7 +178,7 @@ Les livrables du projet se trouvent dans le dossier `docs/` :
 - `docs/rapport-jalon4.pdf` : rapport de soutenance (8 pages).
 - `docs/presentation-jalon4.pdf` : presentation de soutenance (7 slides).
 - `docs/matrice_PME.xlsx` : matrice Produit / Moyen / Element de preuve.
-- `docs/recette.md` : tableau de recette complet.
+- `docs/recette.md` : tableau de recette (validation des tests), avec l'etat observe apres chaque appel.
 
 ## 12. Sources
 
