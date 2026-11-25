@@ -176,17 +176,8 @@ chaque fichier.
 - Les donnees sont en memoire : tout est perdu a la fermeture du programme.
 - Aucune notion d'amende ni de duree de pret depassee n'est implementee.
 
-## 11. Documentation
 
-Les livrables du projet se trouvent dans le dossier `docs/` :
-
-- `docs/diagramme-jalon4.png` : diagramme de classes.
-- `docs/rapport-jalon4.pdf` : rapport final (10 pages hors annexes).
-- `docs/presentation-jalon4.pdf` : presentation de demonstration (7 slides).
-- `docs/matrice_PME.xlsx` : matrice Produit / Moyen / Element de preuve.
-- `docs/recette.md` : tableau de recette (scenarios et validation des tests), avec l'etat observe apres chaque appel.
-
-## 12. Sources
+## 11. Sources
 
 - CM 1 a CM 5, POO IIAA511, Dr Babacar LEYE.
 - Fiche TD 4, tests unitaires et matrice de tests.
