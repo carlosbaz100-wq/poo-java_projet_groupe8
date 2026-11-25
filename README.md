@@ -16,7 +16,7 @@ realisee en groupe de trois sur quatre jalons.
 | Cours | POO IIAA511 |
 | Encadrant | Dr Babacar LEYE |
 | Annee academique | 2026 - 2027 |
-| Version livree | jalon 4 et version 1.0 |
+| Version livree | version 1.0 |
 | Depot | https://github.com/carlosbaz100-wq/poo-java_projet_groupe8 |
 | Tag final | version-1.0 (commit de cloture) |
 
@@ -150,24 +150,24 @@ La suite compte 44 tests repartis en sept classes :
 | `ServicePretRetourTest` | 6 | retour, dont cinq refus |
 
 Les 16 tests demandes par la fiche TD 4 sont couverts. La suite complete compte
-44 tests, dont 16 succes et 28 refus. Le tableau de recette (validation des tests)
-donne, pour chaque scenario, le resultat attendu et l'etat observe apres l'appel :
-`docs/recette.md`.
+44 tests, dont 16 succes et 28 refus. Les tests se trouvent dans `src/test/java` ;
+le rapport final presente la synthese de la recette, avec le resultat attendu et
+l'etat observe apres chaque appel.
 
 ## 9. Contributions
 
 | Membre | Perimetre | Fichiers | Lignes |
 |---|---|---|---|
 | KOUSSE Souleymane | modele, exceptions, atomicite | `Document`, `Bibliotheque`, `ServicePret`, `Empruntable`, les quatre exceptions | 373 |
-| DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les sept classes de test, `docs/recette.md` | 758 |
+| DAMBA Aimee | collections, interfaces, tests | `Lecteur`, `Periodique`, les sept classes de test | 758 |
 | BAZONGO Yessamba Carlos | build, demonstration, livrables | `pom.xml`, `Main`, `Livre`, `CatalogueDocuments`, `Consultable`, `README`, diagramme, rapport, presentation | 217 |
 
 Total : 1348 lignes Java suivies par Git (etat final). La matrice PME distingue les
 taches historiques et la tache d'harmonisation finale ; les lignes ci-dessus sont
 comptees par fichier au dernier commit, pas par auteur de chaque ligne.
 
-Chaque jalon a fait l'objet d'un tag : `jalon-1`, `jalon-2`, `jalon-3`, puis `jalon-4`
-et `version-1.0` pour la version finale. L'historique des commits indique l'auteur de
+Les tags `jalon-1`, `jalon-2` et `jalon-3` marquent les etapes intermediaires ; le tag
+`version-1.0` marque la version finale. L'historique des commits indique l'auteur de
 chaque fichier.
 
 ## 10. Limites connues
@@ -183,4 +183,5 @@ chaque fichier.
 - Fiche TD 4, tests unitaires et matrice de tests.
 - Documentation JUnit 5 et Maven.
 - Claude (Anthropic) : relecture du code, du README et aide a la redaction.
-- Capsule video de demonstration (8 minutes maximum), a remettre sur cle USB.
+- Capsule video de demonstration (8 minutes maximum), a remettre au delegue du groupe,
+  qui la transmet a Babacar LEYE via WeTransfer.
